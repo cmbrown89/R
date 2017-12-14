@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = TRUE)
 - **Supervised learning** - labeled input data; starts with training set with labeled data and followed by observing how well computer has modeled rest of dataset
     + Examples: Regression and category classification
     + **Personal estimation:** For data with relatively known data structures and outcomes
-    + **Unsupervised learning* - unlabeled input data, no training sets, unknown outcomes, made for building guidelines, reducing complexity by clustering, ect.    
+    + *Unsupervised learning* - unlabeled input data, no training sets, unknown outcomes, made for building guidelines, reducing complexity by clustering, ect.    
     + Examples: k-means clustering and hierarchical clustering
     + **Personal estimation:** For data with unknown data structure and outcomes
 
