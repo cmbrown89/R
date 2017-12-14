@@ -1,0 +1,45 @@
+---
+title: "Natural Language Processing and Machine Learning"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Conceptual Overview:
+
+**Natural Language Processing** -- statistical analysis of written language (i.e., literature, tweets, ect.) to gain insights
+
+- It’s suggested we first split tweets into tokens which create a dataframe where each word forms their own columns (tokenization)
+    + We should use a complex tokenizer that can account for the way the English language is used factoring in punctuation, names, white space, ect.
+- We may want to make a list of stopwords which are words that normally convey no useful information (the, and, a, ect.) 
+    + This is completely optional and might actually be detrimental depending on what we want, so we’ll need to think about this
+- Useful analyses we could do:
+    + We can make a map of where tweets came from
+    + We can pull out other hashtags 
+    + See gender breakdown
+    + Sentiment analysis in combination with other analyses (i.e., gender, hashtags)
+    + Age
+- Natural language processing homework for 11/29 for both C and J:
+    + Research the workflow to take .json databases created with the tweet streaming in R and determine how to do natural language processing
+        + focus on the data parsing and data formatting required to do the tokenization
+        + determine if there are R packages we need; pick a “perspective” on our data - what question are we asking and how are we choosing to interrogate that question with the database we created
+        + This will be for discussion - we’ll present each other our pipelines and choose whether to coalesce around one approach or trade approaches
+    + Task for Clairessa: take it fuckin easy. (the gin is in the freezer. Anders might be there too. He likes cold shit)
+    + Task for Julia: find a place for Tina and Clairessa to dance (based on a decent DJ night - 90s-2000 pop/R&B) on Friday night
+
+**Machine Learning** -- a statistical way of teaching a computer to problem solve [https://machinelearningmastery.com/a-tour-of-machine-learning-algorithms/](https://machinelearningmastery.com/a-tour-of-machine-learning-algorithms/)
+
+- **Supervised learning** - labeled input data; starts with training set with labeled data and followed by observing how well computer has modeled rest of dataset
+    + Examples: Regression and category classification
+    + **Personal estimation:** For data with relatively known data structures and outcomes
+    + **Unsupervised learning* - unlabeled input data, no training sets, unknown outcomes, made for building guidelines, reducing complexity by clustering, ect.    
+    + Examples: k-means clustering and hierarchical clustering
+    + **Personal estimation:** For data with unknown data structure and outcomes
+
+- [How](https://machinelearningmastery.com/a-data-driven-approach-to-machine-learning/) to pick the best algorithm*:
+    + Suggests to use several algorithms and determine which is best
+        + Need metrics like speed, results, ect.
+        + Deep learning is recommended for natural language processing, maybe we [start](https://machinelearningmastery.com/evaluate-skill-deep-learning-models/) there and branch out from there
+
