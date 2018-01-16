@@ -1,2 +1,2 @@
 # R
-This repository contains files created to practice coding and machine learning in R
+This repository contains an overview of how I processed my published data along with any functions I built along the way.
