@@ -47,7 +47,7 @@ barcode$Barcode_revcomp = sapply(barcode[,1], function(x){toupper(c2s(rev(comp(s
 barcode_revcomp = data.frame("Barcode" = barcode$Barcode_revcomp, "SampleID" = barcode[,2])
 
 # Write dataframe to table 
-write.table(barcode_revcomp, "reformatted_barcodes.txt", sep = "\t", quote = F)
+write.table(barcode_revcomp, "reformatted_barcodes.txt", sep = "\t", quote = F, row.names = F)
 
 # Print success message
 print("Reversed barcodes are in reformatted_barcodes.txt")
