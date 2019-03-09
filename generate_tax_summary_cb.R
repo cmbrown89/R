@@ -2,7 +2,7 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
   # Make sure that the taxa table includes all ASVs, or else stop 
   # The number of subsetted ASVs in the taxa table should match the number of ASVs in the ASV table
   if((dim(taxa_tab[rownames(taxa_tab) %in% names(asv_tab),])[1] == dim(asv_tab)[2]) != TRUE){
-    stop("Check your taxa table. All ASVs must be present in the taxa table.")
+    stop("Check your taxa table. All ASVs in the ASV table must be present in the taxa table.")
   }
   
   # Apply taxa names to ASVs
