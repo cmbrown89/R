@@ -3,6 +3,7 @@
 # Check that the raw counts add up to collasped counts
 # Check that all samples add to 100%
 # Check that samples have been rarefied, if not, warn but continue
+# Simplify if statements, make them simply fail if condition not met
 
 generate.tax.summary.cb = function(asv_tab, taxa_tab){
   # Make sure that the taxa table includes all ASVs, or else stop 
