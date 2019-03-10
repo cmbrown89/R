@@ -1,3 +1,9 @@
+# To do:
+# Check that dplyr or tidyverse is installed and load if either isn't true
+# Check that the raw counts add up to collasped counts
+# Check that all samples add to 100%
+# Check that samples have been rarefied, if not, warn but continue
+
 generate.tax.summary.cb = function(asv_tab, taxa_tab){
   # Make sure that the taxa table includes all ASVs, or else stop 
   # The number of subsetted ASVs in the taxa table should match the number of ASVs in the ASV table
@@ -29,7 +35,7 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
   if(nrow(t_asv_tab) == length(cleaned_asv_taxa_cat)){
     t_asv_tab$Taxa = cleaned_asv_taxa_cat
     
-    collasped = t_final_young_asvs.df %>%
+    collasped = t_asv_tab %>%
       group_by(Taxa) %>%
       summarise_all(sum) %>%
       as.data.frame()
@@ -40,6 +46,5 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
                                  scale = apply(collasped[,2:ncol(collasped)], 2, sum)) %>%
       as.data.frame() 
   }
-  
-}
 
+}
