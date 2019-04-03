@@ -8,7 +8,7 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
   }
   
   rarefac_check = sapply(rowSums(asv_tab), function(c) identical(c[1], c))
-  if(length(rarefac_check[rarefac_check == F]) == 0){
+  if(length(rarefac_check[rarefac_check == F]) != 0){
     warning("FYI: Your data is not rarefied.")
   }
   
@@ -55,7 +55,7 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
   
   
   if(sum(collasped_normalized) != length(collasped_normalized)){
-    stop("Uh oh, something went wrong. The relative abundances of all samples do not add to 100%.")
+    warning("Uh oh, the relative abundances of all samples do not add to 100%.")
   }
   
   unassigned = function(df){
@@ -67,9 +67,5 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
   
   unassigned(collasped_normalized)
 
-  
 }
-
-
-sapply(rowSums(old.young.asv), function(u) identical(u[1], u))
 
