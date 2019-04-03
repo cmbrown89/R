@@ -1,6 +1,3 @@
-###To do:
-## Check that samples have been rarefied, if not, warn but continue
-## Check that the raw counts add up to collasped counts
 
 generate.tax.summary.cb = function(asv_tab, taxa_tab){
   # Purpose: Take ASV table and taxonomic information from dada2 and produce a dataframe with the relative abundances of different taxa
@@ -10,8 +7,14 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
     stop("Check your taxa table. All ASVs in the ASV table must be present in the taxa table.")
   }
   
+  rarefac_check = sapply(rowSums(asv_tab), function(c) identical(c[1], c))
+  if(length(rarefac_check[rarefac_check == F]) == 0){
+    warning("FYI: Your data is not rarefied.")
+  }
+  
   require("tidyverse")
   
+
   # Apply taxa names to ASVs
   asv_taxa = taxa_tab[rownames(taxa_tab) %in% names(asv_tab),]
   
@@ -34,7 +37,7 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
   t_asv_tab = as.data.frame(t(asv_tab))
   
   if(nrow(t_asv_tab) != length(cleaned_asv_taxa_cat)){
-    stop("Something went wrong.")
+    stop("Hm, something went wrong.")
   }
   
   t_asv_tab$Taxa = cleaned_asv_taxa_cat
@@ -66,3 +69,7 @@ generate.tax.summary.cb = function(asv_tab, taxa_tab){
 
   
 }
+
+
+sapply(rowSums(old.young.asv), function(u) identical(u[1], u))
+
