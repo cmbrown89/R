@@ -1,3 +1,6 @@
+#To do:
+### Add sort step before line 24's check
+
 
 generate.tax.summary.cb = function(asv_tab, taxa_tab){
   # Purpose: Take ASV table and taxonomic information from dada2 and produce a dataframe with the relative abundances of different taxa
