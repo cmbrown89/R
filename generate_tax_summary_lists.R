@@ -56,9 +56,11 @@ generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = FALSE){
     
   }
   
-  # Sample_Names work here and RelAbund are integers
+  
   tax_list = tax_lister(cleanedNAs)
   
+  
+  # Sum (condense) all taxa that are the same at each taxonomic level
   condenser = lapply(tax_list, function(d){
     d %>%
       group_by(Sample_Names, Taxa) %>%
