@@ -1,8 +1,7 @@
-# Next task: Relative abundance; Intuition: tidyverse is good for this
 # Next next task: Code sanity checks (testing to see tot seq counts per sample, ect.)
 # Next next next task: Code optimization: start timing functions and try to make it faster (lapply vs for loops), ect.
 
-generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = FALSE){
+generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = TRUE){
   ############### Accept ASV table and ASV ID table from dada2 and return a list of taxonomic level-specific relative abundance tables ###############
   
   # Check that the taxa table includes all ASVs: # subsetted ASVs in the taxa table should == # ASVs in the ASV table
@@ -16,7 +15,7 @@ generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = FALSE){
   prep_taxa = data.frame("ASV" = rownames(taxa_tab), taxa_tab)
   
   asv.tax = prep_asv %>%
-    gather("ASV","RelAbund",-"Sample_Names") %>%
+    gather("ASV","Raw_Counts",-"Sample_Names") %>%
     full_join(prep_taxa, "ASV")
   
   # Convert taxonomic columns from factors to character vectors
@@ -29,12 +28,12 @@ generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = FALSE){
   tax_lister = function(df){ 
     
     # Extract taxonomic level names
-    tax_names = names(df[,!names(df) %in% c("Sample_Names", "ASV", "RelAbund")])
+    tax_names = names(df[,!names(df) %in% c("Sample_Names", "ASV", "Raw_Counts")])
     
     # Define empty list for filling with taxonomic level-specific abundances
     list_new_df = list()
     
-    new_df = df[,names(df) %in% c("Sample_Names", "RelAbund")]
+    new_df = df[,names(df) %in% c("Sample_Names", "Raw_Counts")]
     
     # Select all columns with taxonomic data
     df_sub = df[,names(df) %in% tax_names] 
@@ -42,9 +41,9 @@ generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = FALSE){
     # Build list of dataframes containing taxonomic columns 
     for(i in 1:length(tax_names)){
       if(i == 1){
-        list_new_df[[i]] = data.frame("Sample_Names" = df$Sample_Names, "RelAbund" = df$RelAbund, "Taxa" = df_sub$Kingdom)
+        list_new_df[[i]] = data.frame("Sample_Names" = df$Sample_Names, "Raw_Counts" = df$Raw_Counts, "Taxa" = df_sub$Kingdom)
       }else{
-        list_new_df[[i]] = data.frame("Sample_Names" = df$Sample_Names, "RelAbund" = df$RelAbund, 
+        list_new_df[[i]] = data.frame("Sample_Names" = df$Sample_Names, "Raw_Counts" = df$Raw_Counts, 
                                       "Taxa" = apply(df_sub[,1:i, drop = F], 1, function(z) paste(z, collapse = "; ")))
       }
     }
@@ -64,11 +63,26 @@ generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = FALSE){
   condenser = lapply(tax_list, function(d){
     d %>%
       group_by(Sample_Names, Taxa) %>%
-      summarise("Summed_RelAbund" = sum(RelAbund))
+      summarise("Summed_Raw_Counts" = sum(Raw_Counts)) %>%
+      as.data.frame()
   })
   
-  return(condenser)
+  #return(condenser)
   
-  # Need to do: Give relabund option for converting raw counts to relative abundance. Or maybe give the opposite and assume rel abundance conversion.
+  # Relative Abundance calculation
+  if(relAbund == TRUE){
+    relabund = lapply(condenser, function(cd){
+      cd %>%
+        group_by(Sample_Names) %>%
+        mutate("RelAbund" = Summed_Raw_Counts/sum(Summed_Raw_Counts)) %>%
+        as.data.frame()
+    })
+    
+    return(relabund)
+    
+  }else{
+
+    return(condenser)
+  }
   
 }
