@@ -1,8 +1,12 @@
 # Next next task: Code sanity checks (testing to see tot seq counts per sample, ect.)
 # Next next next task: Code optimization: start timing functions and try to make it faster (lapply vs for loops), ect.
+# Next next next next task: Provide option to get data back in wide format
 
 generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = TRUE){
   ############### Accept ASV table and ASV ID table from dada2 and return a list of taxonomic level-specific relative abundance tables ###############
+  
+  taxa_tab = as.data.frame(taxa_tab)
+  asv_tab = as.data.frame(asv_tab) # Added November 8, 2019
   
   # Check that the taxa table includes all ASVs: # subsetted ASVs in the taxa table should == # ASVs in the ASV table
   if((dim(taxa_tab[rownames(taxa_tab) %in% names(asv_tab),])[1] == dim(asv_tab)[2]) != TRUE){
@@ -17,6 +21,7 @@ generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = TRUE){
   asv.tax = prep_asv %>%
     gather("ASV","Raw_Counts",-"Sample_Names") %>%
     full_join(prep_taxa, "ASV")
+  
   
   # Convert taxonomic columns from factors to character vectors
   asv.tax[,4:ncol(asv.tax)] = lapply(asv.tax[,4:ncol(asv.tax)], function(o) as.character(o))
@@ -55,9 +60,7 @@ generate.tax.summary.lists = function(asv_tab, taxa_tab, relAbund = TRUE){
     
   }
   
-  
   tax_list = tax_lister(cleanedNAs)
-  
   
   # Sum (condense) all taxa that are the same at each taxonomic level
   condenser = lapply(tax_list, function(d){
